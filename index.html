@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DocVerify AI</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #14213d;
+}
+
+header {
+    background: #0b1f3a;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.subtitle {
+    margin-top: 5px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+h1 {
+    text-align: center;
+}
+
+.description {
+    text-align: center;
+    color: #64748b;
+}
+
+.upload-area {
+    margin-top: 30px;
+    border: 2px dashed #8ca0bb;
+    border-radius: 15px;
+    padding: 45px 20px;
+    text-align: center;
+}
+
+.icon {
+    font-size: 55px;
+}
+
+button {
+    background: #1769aa;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0d568d;
+}
+
+input {
+    display: none;
+}
+
+#fileName {
+    margin-top: 15px;
+    color: #52647d;
+}
+
+#result {
+    display: none;
+    margin-top: 30px;
+    background: #f6f8fb;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.status {
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff3cd;
+    color: #805f00;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #718096;
+    font-size: 13px;
+}
+
+@media(max-width:600px) {
+
+    .container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+DocVerify AI
+</div>
+
+<div class="subtitle">
+Intelligent Document Verification System
+</div>
+
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+<h1>
+Verificar documento
+</h1>
+
+<p class="description">
+Analise certificados, passaportes, BI e outros documentos.
+</p>
+
+
+<div class="upload-area">
+
+<div class="icon">
+📄
+</div>
+
+<h2>
+Carregar documento
+</h2>
+
+<p>
+Fotografia, JPG, PNG ou PDF
+</p>
+
+<button onclick="document.getElementById('document').click()">
+
+Selecionar documento
+
+</button>
+
+<input
+type="file"
+id="document"
+accept="image/*,.pdf"
+>
+
+<div id="fileName">
+
+Nenhum documento selecionado
+
+</div>
+
+</div>
+
+
+<div id="result">
+
+<h2>
+🔎 Resultado da análise
+</h2>
+
+<div class="status">
+
+⚠️ ANÁLISE PRELIMINAR
+
+</div>
+
+<p id="documentType">
+Tipo de documento: aguardando análise
+</p>
+
+<p>
+<strong>Estado:</strong>
+Motor de inteligência artificial ainda não conectado.
+</p>
+
+<p>
+Esta é a primeira versão do DocVerify AI.
+O sistema de análise será desenvolvido nas próximas etapas.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+DocVerify AI © 2026
+
+</footer>
+
+
+<script>
+
+const documentInput =
+document.getElementById("document");
+
+const fileName =
+document.getElementById("fileName");
+
+const result =
+document.getElementById("result");
+
+const documentType =
+document.getElementById("documentType");
+
+
+documentInput.addEventListener("change", function() {
+
+    if (this.files.length === 0) {
+        return;
+    }
+
+    const file = this.files[0];
+
+    fileName.textContent = file.name;
+
+    result.style.display = "block";
+
+
+    if (file.type === "application/pdf") {
+
+        documentType.textContent =
+        "Tipo de documento: PDF";
+
+    } else {
+
+        documentType.textContent =
+        "Tipo de documento: imagem";
+
+    }
+
+});
+
+</script>
+
+</body>
+
+  </html>
