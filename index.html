@@ -6,6 +6,8 @@
 
 <title>DocVerify AI</title>
 
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
 <style>
 
 * {
@@ -22,24 +24,23 @@ body {
 header {
     background: #0b1f3a;
     color: white;
-    padding: 22px;
+    padding: 24px 15px;
     text-align: center;
 }
 
 .logo {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
 }
 
 .subtitle {
-    margin-top: 5px;
-    font-size: 14px;
-    opacity: 0.8;
+    margin-top: 6px;
+    opacity: .8;
 }
 
 .container {
     max-width: 900px;
-    margin: 40px auto;
+    margin: 35px auto;
     padding: 20px;
 }
 
@@ -47,7 +48,7 @@ header {
     background: white;
     padding: 30px;
     border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
 }
 
 h1 {
@@ -59,11 +60,11 @@ h1 {
     color: #64748b;
 }
 
-.upload-area {
+.upload {
     margin-top: 30px;
     border: 2px dashed #8ca0bb;
     border-radius: 15px;
-    padding: 45px 20px;
+    padding: 40px 20px;
     text-align: center;
 }
 
@@ -74,16 +75,16 @@ h1 {
 button {
     background: #1769aa;
     color: white;
-    border: none;
-    padding: 14px 24px;
+    border: 0;
+    padding: 14px 25px;
     border-radius: 10px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
 }
 
-button:hover {
-    background: #0d568d;
+button:disabled {
+    opacity: .5;
 }
 
 input {
@@ -95,20 +96,61 @@ input {
     color: #52647d;
 }
 
+#progress {
+    display: none;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.progressBar {
+    width: 100%;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#progressFill {
+    height: 100%;
+    width: 0%;
+    background: #1769aa;
+}
+
 #result {
     display: none;
     margin-top: 30px;
+}
+
+.box {
     background: #f6f8fb;
-    padding: 20px;
+    padding: 18px;
     border-radius: 12px;
+    margin-top: 15px;
 }
 
 .status {
-    padding: 10px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 10px;
     background: #fff3cd;
     color: #805f00;
     font-weight: bold;
+}
+
+textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 15px;
+    border: 1px solid #ccd5e0;
+    border-radius: 10px;
+    resize: vertical;
+}
+
+img {
+    max-width: 100%;
+    max-height: 400px;
+    display: none;
+    margin: 20px auto;
+    border-radius: 10px;
 }
 
 footer {
@@ -121,8 +163,8 @@ footer {
 @media(max-width:600px) {
 
     .container {
-        margin: 20px auto;
-        padding: 15px;
+        margin: 15px auto;
+        padding: 12px;
     }
 
     .card {
@@ -130,13 +172,12 @@ footer {
     }
 
     .logo {
-        font-size: 23px;
+        font-size: 24px;
     }
 
 }
 
 </style>
-
 </head>
 
 <body>
@@ -163,11 +204,11 @@ Verificar documento
 </h1>
 
 <p class="description">
-Analise certificados, passaportes, BI e outros documentos.
+Certificados, BI, passaportes e outros documentos.
 </p>
 
 
-<div class="upload-area">
+<div class="upload">
 
 <div class="icon">
 📄
@@ -178,24 +219,35 @@ Carregar documento
 </h2>
 
 <p>
-Fotografia, JPG, PNG ou PDF
+Para esta versão, recomendamos uma imagem JPG ou PNG.
 </p>
 
 <button onclick="document.getElementById('document').click()">
-
 Selecionar documento
-
 </button>
 
 <input
 type="file"
 id="document"
-accept="image/*,.pdf"
+accept="image/jpeg,image/png,image/webp"
 >
 
 <div id="fileName">
-
 Nenhum documento selecionado
+</div>
+
+<img id="preview">
+
+
+<div id="progress">
+
+<p id="progressText">
+Preparando análise...
+</p>
+
+<div class="progressBar">
+<div id="progressFill"></div>
+</div>
 
 </div>
 
@@ -208,25 +260,49 @@ Nenhum documento selecionado
 🔎 Resultado da análise
 </h2>
 
-<div class="status">
+<div class="status" id="status">
+Análise concluída
+</div>
 
-⚠️ ANÁLISE PRELIMINAR
+
+<div class="box">
+
+<strong>Tipo provável:</strong>
+
+<p id="documentType">
+Aguardando análise
+</p>
 
 </div>
 
-<p id="documentType">
-Tipo de documento: aguardando análise
+
+<div class="box">
+
+<strong>Nível de risco preliminar:</strong>
+
+<p id="risk">
+Aguardando análise
 </p>
 
-<p>
-<strong>Estado:</strong>
-Motor de inteligência artificial ainda não conectado.
-</p>
+</div>
 
-<p>
-Esta é a primeira versão do DocVerify AI.
-O sistema de análise será desenvolvido nas próximas etapas.
-</p>
+
+<div class="box">
+
+<strong>Texto extraído pelo OCR:</strong>
+
+<textarea id="extractedText" readonly></textarea>
+
+</div>
+
+
+<div class="box">
+
+<strong>Observações:</strong>
+
+<p id="observations"></p>
+
+</div>
 
 </div>
 
@@ -244,48 +320,3 @@ DocVerify AI © 2026
 
 <script>
 
-const documentInput =
-document.getElementById("document");
-
-const fileName =
-document.getElementById("fileName");
-
-const result =
-document.getElementById("result");
-
-const documentType =
-document.getElementById("documentType");
-
-
-documentInput.addEventListener("change", function() {
-
-    if (this.files.length === 0) {
-        return;
-    }
-
-    const file = this.files[0];
-
-    fileName.textContent = file.name;
-
-    result.style.display = "block";
-
-
-    if (file.type === "application/pdf") {
-
-        documentType.textContent =
-        "Tipo de documento: PDF";
-
-    } else {
-
-        documentType.textContent =
-        "Tipo de documento: imagem";
-
-    }
-
-});
-
-</script>
-
-</body>
-
-  </html>
