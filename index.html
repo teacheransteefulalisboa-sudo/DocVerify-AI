@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DocVerify AI</title>
+<title>Analisador de Documentos</title>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -15,300 +16,223 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    color: #14213d;
-}
-
-header {
-    background: #0b1f3a;
-    color: white;
-    text-align: center;
-    padding: 25px 15px;
-}
-
-.logo {
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.subtitle {
-    margin-top: 6px;
-    opacity: 0.8;
+    background: #f2f4f7;
+    color: #222;
 }
 
 .container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 15px;
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    padding: 20px;
+}
+
+.header {
+    background: #17365d;
+    color: white;
+    padding: 22px 15px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header p {
+    margin: 8px 0 0;
+    font-size: 14px;
 }
 
 .card {
     background: white;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    margin-bottom: 18px;
 }
 
-h1 {
+.file-label {
+    display: block;
+    width: 100%;
+    padding: 16px;
     text-align: center;
-}
-
-.description {
-    text-align: center;
-    color: #64748b;
-}
-
-.upload-area {
-    margin-top: 30px;
-    padding: 40px 20px;
-    border: 2px dashed #8ca0bb;
-    border-radius: 15px;
-    text-align: center;
-}
-
-.icon {
-    font-size: 55px;
-}
-
-input {
-    display: none;
-}
-
-button {
-    border: none;
-    border-radius: 10px;
-    padding: 14px 22px;
-    background: #1769aa;
+    background: #17365d;
     color: white;
-    font-size: 16px;
-    font-weight: bold;
+    border-radius: 8px;
     cursor: pointer;
-    margin: 5px;
+    font-weight: bold;
 }
 
-.remove {
-    background: #b42318;
-}
-
-.analyze {
-    background: #16803c;
-}
-
-#fileName {
-    margin-top: 15px;
-    color: #52647d;
-}
-
-#previewBox {
+#fileInput {
     display: none;
-    margin-top: 25px;
+}
+
+.preview-box {
+    margin-top: 18px;
     text-align: center;
+    display: none;
 }
 
 #preview {
     max-width: 100%;
-    max-height: 500px;
-    border-radius: 12px;
+    max-height: 450px;
+    border-radius: 8px;
     border: 1px solid #ddd;
 }
 
-#pdfMessage {
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.analyze {
+    background: #198754;
+    color: white;
+}
+
+.copy {
+    background: #0d6efd;
+    color: white;
+}
+
+.new {
+    background: #6c757d;
+    color: white;
+}
+
+button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+#status {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.progress-container {
     display: none;
-    padding: 20px;
-    background: #f6f8fb;
+    margin-top: 15px;
+}
+
+.progress {
+    width: 100%;
+    height: 12px;
+    background: #ddd;
     border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #198754;
+    transition: width 0.2s;
+}
+
+.result-box {
+    display: none;
 }
 
 #result {
-    display: none;
-    margin-top: 30px;
-    padding: 20px;
-    background: #f6f8fb;
-    border-radius: 12px;
+    width: 100%;
+    min-height: 250px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: Arial, sans-serif;
 }
 
-footer {
+.footer {
     text-align: center;
-    padding: 30px;
-    color: #718096;
+    color: #777;
+    font-size: 13px;
+    padding: 10px;
 }
-
-@media(max-width:600px) {
-
-    .card {
-        padding: 20px;
-    }
-
-    .logo {
-        font-size: 24px;
-    }
-
-}
-
 </style>
 </head>
 
 <body>
 
-<header>
-
-<div class="logo">
-DocVerify AI
-</div>
-
-<div class="subtitle">
-Intelligent Document Verification System
-</div>
-
-</header>
-
-
 <div class="container">
 
-<div class="card">
+    <div class="header">
+        <h1>📄 Analisador de Documentos</h1>
+        <p>Selecione uma imagem para extrair o texto</p>
+    </div>
 
-<h1>
-Verificar documento
-</h1>
+    <div class="card">
 
-<p class="description">
-Certificados, BI, passaportes e outros documentos.
-</p>
+        <label for="fileInput" class="file-label">
+            📁 ESCOLHER DOCUMENTO
+        </label>
 
+        <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+        >
 
-<div class="upload-area">
+        <div class="preview-box" id="previewBox">
+            <h3>Documento selecionado</h3>
 
-<div class="icon">
-📄
-</div>
+            <img id="preview" alt="Documento selecionado">
 
-<h2>
-Selecionar documento
-</h2>
+            <button
+                class="analyze"
+                id="analyzeBtn"
+                disabled
+            >
+                🔍 ANALISAR DOCUMENTO
+            </button>
+        </div>
 
-<p>
-Escolha uma fotografia ou PDF.
-</p>
+        <div class="progress-container" id="progressContainer">
 
-<button onclick="document.getElementById('documentInput').click()">
-📷 Escolher documento
-</button>
+            <p id="progressText">
+                A preparar análise...
+            </p>
 
-<input
-id="documentInput"
-type="file"
-accept="image/*,.pdf"
->
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
+            </div>
 
+        </div>
 
-<div id="fileName">
-Nenhum documento selecionado
-</div>
+        <div id="status"></div>
 
-</div>
+    </div>
 
+    <div class="card result-box" id="resultBox">
 
-<div id="previewBox">
+        <h3>📝 Texto encontrado</h3>
 
-<h3>
-Pré-visualização
-</h3>
+        <textarea
+            id="result"
+            placeholder="O texto extraído aparecerá aqui..."
+        ></textarea>
 
-<img
-id="preview"
-alt="Pré-visualização do documento"
->
+        <button
+            class="copy"
+            id="copyBtn"
+        >
+            📋 COPIAR TEXTO
+        </button>
 
-<div id="pdfMessage">
-📄 PDF selecionado.
-<br><br>
-A pré-visualização de PDF será adicionada numa próxima versão.
-</div>
-
-<br>
-
-<button
-class="remove"
-onclick="removeDocument()">
-❌ Remover
-</button>
-
-<button
-class="analyze"
-onclick="analyzeDocument()">
-🔎 Analisar documento
-</button>
-
-</div>
-
-
-<div id="result">
-
-<h2>
-📊 Resultado
-</h2>
-
-<p id="resultText">
-A análise será adicionada na próxima etapa.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-
-<footer>
-
-DocVerify AI © 2026
-
-</footer>
-
-
-<script>
-
-const input =
-document.getElementById("documentInput");
-
-const fileName =
-document.getElementById("fileName");
-
-const previewBox =
-document.getElementById("previewBox");
-
-const preview =
-document.getElementById("preview");
-
-const pdfMessage =
-document.getElementById("pdfMessage");
-
-const result =
-document.getElementById("result");
-
-const resultText =
-document.getElementById("resultText");
-
-
-input.addEventListener("change", function() {
-
-    const file = this.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    fileName.textContent =
-        file.name;
-
-    previewBox.style.display =
-        "block";
-
-    result.style.display =
-        "none";
-
-
-    if (file.type.startsWith("image/")) {
-
-        pdfMessage.style.display =
-          
+       
