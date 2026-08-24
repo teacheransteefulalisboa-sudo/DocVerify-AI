@@ -393,7 +393,7 @@ DocVerify AI © 2026
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 
-<script>
+     <script>
 
 const documentInput =
 document.getElementById("document");
@@ -414,154 +414,7 @@ const previewBox =
 document.getElementById("previewBox");
 
 
-documentInput.addEventListener("change", async function() {
-
-    if (this.files.length === 0) {
-        return;
-    }
-
-    const file = this.files[0];
-
-    fileName.textContent = file.name;
-
-    result.style.display = "block";
-
-
-    if (file.type.startsWith("image/")) {
-
-        const reader = new FileReader();
-
-        reader.onload = async function(event) {
-
-            preview.src = event.target.result;
-
-            previewBox.style.display = "block";
-
-            documentType.textContent =
-                "Tipo de documento: imagem";
-
-
-            const status =
-                document.querySelector(".status");
-
-
-            status.textContent =
-                "🔄 A ler o documento...";
-
-
-            status.style.background =
-                "#dbeafe";
-
-            status.style.color =
-                "#1e40af";
-
-
-            try {
-
-                const ocr =
-                    await Tesseract.recognize(
-                        event.target.result,
-                        "eng",
-                        {
-                            logger: function(info) {
-
-                                if (
-                                    info.status ===
-                                    "recognizing text"
-                                ) {
-
-                                    status.textContent =
-                                        "🔄 A ler: " +
-                                        Math.round(
-                                            info.progress * 100
-                                        ) +
-                                        "%";
-
-                                }
-
-                            }
-                        }
-                    );
-
-
-                const texto =
-                    ocr.data.text;
-
-
-                status.textContent =
-                    "✅ TEXTO RECONHECIDO";
-
-
-                status.style.background =
-                    "#d1fae5";
-
-                status.style.color =
-                    "#065f46";
-
-
-                const caixa =
-                    document.createElement("div");
-
-
-                caixa.style.marginTop =
-                    "20px";
-
-
-                caixa.innerHTML = `
-
-                    <h3>
-                    📝 Texto encontrado
-                    </h3>
-
-                    <textarea
-                        id="ocrResult"
-                        style="
-                            width:100%;
-                            min-height:220px;
-                            padding:15px;
-                            border:1px solid #cbd5e1;
-                            border-radius:10px;
-                            font-size:15px;
-                        "
-                    ></textarea>
-
-                    <br><br>
-
-                    <button id="copyOCR">
-                        📋 Copiar texto
-                    </button>
-
-                `;
-
-
-                caixa.querySelector("#ocrResult").value =
-                    texto;
-
-
-                result.appendChild(caixa);
-
-
-                caixa.querySelector("#copyOCR")
-                    .addEventListener(
-                        "click",
-                        function() {
-
-                            const textoOCR =
-                                document.getElementById(
-                                    "ocrResult"
-                                ).value;
-
-
-                            navigator.clipboard.writeText(
-                                textoOCR
-                            );
-
-
-                            this.textContent =
-                                "✅ Texto copiado!";
-
-                        }
-                    );
+/* BOTÃO COMEÇAR */
 
 function startApp() {
 
@@ -570,8 +423,157 @@ function startApp() {
 
     welcomeScreen.style.display = "none";
 
-    }
-</script>        
+}
+
+
+/* SELEÇÃO DO DOCUMENTO */
+
+documentInput.addEventListener(
+    "change",
+    async function() {
+
+        if (this.files.length === 0) {
+            return;
+        }
+
+
+        const file =
+            this.files[0];
+
+
+        fileName.textContent =
+            file.name;
+
+
+        result.style.display =
+            "block";
+
+
+        /* VERIFICAR SE É IMAGEM */
+
+        if (file.type.startsWith("image/")) {
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                async function(event) {
+
+
+                    /* MOSTRAR IMAGEM */
+
+                    preview.src =
+                        event.target.result;
+
+
+                    previewBox.style.display =
+                        "block";
+
+
+                    documentType.textContent =
+                        "Tipo de documento: imagem";
+
+
+                    const status =
+                        document.querySelector(
+                            ".status"
+                        );
+
+
+                    status.textContent =
+                        "🔄 A ler o documento...";
+
+
+                    status.style.background =
+                        "#dbeafe";
+
+
+                    status.style.color =
+                        "#1e40af";
+
+
+                    try {
+
+
+                        /* INICIAR OCR */
+
+                        const ocr =
+                            await Tesseract.recognize(
+
+                                event.target.result,
+
+                                "eng",
+
+                                {
+
+                                    logger:
+                                        function(info) {
+
+
+                                            if (
+                                                info.status ===
+                                                "recognizing text"
+                                            ) {
+
+
+                                                const percent =
+                                                    Math.round(
+                                                        info.progress *
+                                                        100
+                                                    );
+
+
+                                                status.textContent =
+                                                    "🔄 A ler: " +
+                                                    percent +
+                                                    "%";
+
+                                            }
+
+                                        }
+
+                                }
+
+                            );
+
+
+                        /* TEXTO RECONHECIDO */
+
+                        const texto =
+                            ocr.data.text;
+
+
+                        status.textContent =
+                            "✅ TEXTO RECONHECIDO";
+
+
+                        status.style.background =
+                            "#d1fae5";
+
+
+                        status.style.color =
+                            "#065f46";
+
+
+                        /* CRIAR CAIXA DE TEXTO */
+
+                        const caixa =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        caixa.style.marginTop =
+                            "20px";
+
+
+                        caixa.innerHTML = `
+
+                            <h3>
+                                📝 Texto encontrado
+                            <
 </body>
 
 </html>
