@@ -496,83 +496,188 @@ documentInput.addEventListener(
                     try {
 
 
-                        /* INICIAR OCR */
+                <script>
 
-                        const ocr =
-                            await Tesseract.recognize(
+const documentInput =
+    document.getElementById("document");
 
-                                event.target.result,
+const fileName =
+    document.getElementById("fileName");
 
-                                "eng",
+const result =
+    document.getElementById("result");
 
-                                {
+const documentType =
+    document.getElementById("documentType");
 
-                                    logger:
-                                        function(info) {
+const preview =
+    document.getElementById("preview");
 
-
-                                            if (
-                                                info.status ===
-                                                "recognizing text"
-                                            ) {
-
-
-                                                const percent =
-                                                    Math.round(
-                                                        info.progress *
-                                                        100
-                                                    );
+const previewBox =
+    document.getElementById("previewBox");
 
 
-                                                status.textContent =
-                                                    "🔄 A ler: " +
-                                                    percent +
-                                                    "%";
+/* BOTÃO COMEÇAR */
 
-                                            }
+const startButton =
+    document.getElementById("startButton");
 
-                                        }
+if (startButton) {
+
+    startButton.addEventListener("click", function() {
+
+        const welcomeScreen =
+            document.getElementById("welcomeScreen");
+
+        if (welcomeScreen) {
+
+            welcomeScreen.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* SELECIONAR DOCUMENTO */
+
+documentInput.addEventListener("change", function() {
+
+    if (this.files.length === 0) {
+        return;
+    }
+
+    const file = this.files[0];
+
+    fileName.textContent = file.name;
+
+    result.style.display = "block";
+
+
+    /* IMAGEM */
+
+    if (file.type.startsWith("image/")) {
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = async function(event) {
+
+            preview.src =
+                event.target.result;
+
+            previewBox.style.display =
+                "block";
+
+            documentType.textContent =
+                "Tipo de documento: imagem";
+
+
+            const status =
+                document.querySelector(".status");
+
+
+            status.textContent =
+                "🔄 A preparar OCR...";
+
+            status.style.background =
+                "#dbeafe";
+
+            status.style.color =
+                "#1e40af";
+
+
+            try {
+
+                const ocr =
+                    await Tesseract.recognize(
+                        event.target.result,
+                        "eng",
+                        {
+                            logger: function(info) {
+
+                                if (
+                                    info.status ===
+                                    "recognizing text"
+                                ) {
+
+                                    const percent =
+                                        Math.round(
+                                            info.progress * 100
+                                        );
+
+                                    status.textContent =
+                                        "🔄 A ler: " +
+                                        percent +
+                                        "%";
 
                                 }
 
-                            );
+                            }
+                        }
+                    );
 
 
-                        /* TEXTO RECONHECIDO */
-
-                        const texto =
-                            ocr.data.text;
+                const texto =
+                    ocr.data.text;
 
 
-                        status.textContent =
-                            "✅ TEXTO RECONHECIDO";
+                status.textContent =
+                    "✅ TEXTO RECONHECIDO";
+
+                status.style.background =
+                    "#d1fae5";
+
+                status.style.color =
+                    "#065f46";
 
 
-                        status.style.background =
-                            "#d1fae5";
+                const caixa =
+                    document.createElement("div");
 
 
-                        status.style.color =
-                            "#065f46";
+                caixa.style.marginTop =
+                    "20px";
 
 
-                        /* CRIAR CAIXA DE TEXTO */
+                caixa.innerHTML = `
 
-                        const caixa =
-                            document.createElement(
-                                "div"
-                            );
+                    <h3>
+                        📝 Texto encontrado
+                    </h3>
+
+                    <textarea
+                        id="ocrResult"
+                        style="
+                            width:100%;
+                            min-height:220px;
+                            padding:15px;
+                            border:1px solid #cbd5e1;
+                            border-radius:10px;
+                            font-size:15px;
+                            resize:vertical;
+                        "
+                    ></textarea>
+
+                    <br><br>
+
+                    <button id="copyOCR">
+                        📋 Copiar texto
+                    </button>
+
+                `;
 
 
-                        caixa.style.marginTop =
-                            "20px";
+                caixa.querySelector(
+                    "#ocrResult"
+                ).value = texto;
 
 
-                        caixa.innerHTML = `
-
-                            <h3>
-                                📝 Texto encontrado
-                            <
+                result.appendChild(
+                    caixa
+   
 </body>
 
 </html>
