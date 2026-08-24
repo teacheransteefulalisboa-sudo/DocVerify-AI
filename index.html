@@ -38,8 +38,8 @@ header {
 }
 
 .container {
-    max-width: 950px;
-    margin: 35px auto;
+    max-width: 900px;
+    margin: 40px auto;
     padding: 20px;
 }
 
@@ -63,7 +63,7 @@ h1 {
     margin-top: 30px;
     border: 2px dashed #8ca0bb;
     border-radius: 15px;
-    padding: 40px 20px;
+    padding: 45px 20px;
     text-align: center;
 }
 
@@ -80,24 +80,10 @@ button {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    margin: 5px;
 }
 
 button:hover {
-    opacity: 0.9;
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.secondary {
-    background: #64748b;
-}
-
-.analyze {
-    background: #16803c;
+    background: #0d568d;
 }
 
 input {
@@ -107,113 +93,22 @@ input {
 #fileName {
     margin-top: 15px;
     color: #52647d;
-    word-break: break-word;
-}
-
-#previewBox {
-    display: none;
-    margin-top: 30px;
-    text-align: center;
-}
-
-#preview {
-    max-width: 100%;
-    max-height: 500px;
-    border-radius: 12px;
-    border: 1px solid #d7dee8;
-}
-
-#pdfBox {
-    display: none;
-    padding: 25px;
-    background: #f6f8fb;
-    border-radius: 12px;
-}
-
-#progressBox {
-    display: none;
-    margin-top: 25px;
-}
-
-.progress {
-    width: 100%;
-    height: 12px;
-    background: #e5e7eb;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-#progressBar {
-    height: 100%;
-    width: 0%;
-    background: #1769aa;
-    transition: width .2s;
 }
 
 #result {
     display: none;
     margin-top: 30px;
-}
-
-.result-card {
     background: #f6f8fb;
     padding: 20px;
     border-radius: 12px;
-    margin-top: 15px;
 }
 
-.result-title {
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.risk-low {
-    color: #16803c;
-    font-weight: bold;
-}
-
-.risk-medium {
-    color: #a15c00;
-    font-weight: bold;
-}
-
-.risk-high {
-    color: #b42318;
-    font-weight: bold;
-}
-
-textarea {
-    width: 100%;
-    min-height: 220px;
-    padding: 15px;
-    border: 1px solid #ccd5e0;
-    border-radius: 10px;
-    resize: vertical;
-    font-family: Arial, sans-serif;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-td {
+.status {
     padding: 10px;
-    border-bottom: 1px solid #dce2e9;
-}
-
-td:first-child {
-    font-weight: bold;
-    width: 40%;
-}
-
-.warning {
+    border-radius: 8px;
     background: #fff3cd;
     color: #805f00;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 15px;
+    font-weight: bold;
 }
 
 footer {
@@ -226,8 +121,8 @@ footer {
 @media(max-width:600px) {
 
     .container {
-        margin: 15px auto;
-        padding: 12px;
+        margin: 20px auto;
+        padding: 15px;
     }
 
     .card {
@@ -235,16 +130,13 @@ footer {
     }
 
     .logo {
-        font-size: 24px;
-    }
-
-    td:first-child {
-        width: 45%;
+        font-size: 23px;
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
@@ -267,11 +159,11 @@ Intelligent Document Verification System
 <div class="card">
 
 <h1>
-🔎 Verificar documento
+Verificar documento
 </h1>
 
 <p class="description">
-Certificados, BI, passaportes, cartas de condução e outros documentos.
+Analise certificados, passaportes, BI e outros documentos.
 </p>
 
 
@@ -286,11 +178,13 @@ Carregar documento
 </h2>
 
 <p>
-Selecione uma fotografia JPG, PNG, WEBP ou um PDF.
+Fotografia, JPG, PNG ou PDF
 </p>
 
 <button onclick="document.getElementById('document').click()">
-📷 Selecionar documento
+
+Selecionar documento
+
 </button>
 
 <input
@@ -299,4 +193,99 @@ id="document"
 accept="image/*,.pdf"
 >
 
-<d
+<div id="fileName">
+
+Nenhum documento selecionado
+
+</div>
+
+</div>
+
+
+<div id="result">
+
+<h2>
+🔎 Resultado da análise
+</h2>
+
+<div class="status">
+
+⚠️ ANÁLISE PRELIMINAR
+
+</div>
+
+<p id="documentType">
+Tipo de documento: aguardando análise
+</p>
+
+<p>
+<strong>Estado:</strong>
+Motor de inteligência artificial ainda não conectado.
+</p>
+
+<p>
+Esta é a primeira versão do DocVerify AI.
+O sistema de análise será desenvolvido nas próximas etapas.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+DocVerify AI © 2026
+
+</footer>
+
+
+<script>
+
+const documentInput =
+document.getElementById("document");
+
+const fileName =
+document.getElementById("fileName");
+
+const result =
+document.getElementById("result");
+
+const documentType =
+document.getElementById("documentType");
+
+
+documentInput.addEventListener("change", function() {
+
+    if (this.files.length === 0) {
+        return;
+    }
+
+    const file = this.files[0];
+
+    fileName.textContent = file.name;
+
+    result.style.display = "block";
+
+
+    if (file.type === "application/pdf") {
+
+        documentType.textContent =
+        "Tipo de documento: PDF";
+
+    } else {
+
+        documentType.textContent =
+        "Tipo de documento: imagem";
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>
