@@ -280,7 +280,25 @@ documentInput.addEventListener("change", function() {
 
     result.style.display = "block";
 
+fileName.textContent = file.name;
 
+result.style.display = "block";
+
+if (file.type.startsWith("image/")) {
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+
+        preview.src = event.target.result;
+
+        previewBox.style.display = "block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+    }
     if (file.type === "application/pdf") {
 
         documentType.textContent =
