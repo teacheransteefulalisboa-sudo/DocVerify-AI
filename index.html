@@ -675,8 +675,79 @@ documentInput.addEventListener("change", function() {
                 ).value = texto;
 
 
-                result.appendChild(
-                    caixa
+result.appendChild(caixa);
+
+
+caixa.querySelector(
+    "#copyOCR"
+).addEventListener(
+    "click",
+    function() {
+
+        const textoOCR =
+            caixa.querySelector(
+                "#ocrResult"
+            ).value;
+
+        navigator.clipboard.writeText(
+            textoOCR
+        );
+
+        this.textContent =
+            "✅ Texto copiado!";
+
+    }
+);
+
+
+            } catch (erro) {
+
+                console.error(erro);
+
+                status.textContent =
+                    "❌ Erro ao ler o documento.";
+
+                status.style.background =
+                    "#fee2e2";
+
+                status.style.color =
+                    "#991b1b";
+
+            }
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    }
+
+});
+
+
+/* BOTÃO COMEÇAR */
+
+const startButton =
+    document.getElementById("startButton");
+
+if (startButton) {
+
+    startButton.addEventListener(
+        "click",
+        function() {
+
+            const welcomeScreen =
+                document.getElementById(
+                    "welcomeScreen"
+                );
+
+            welcomeScreen.style.display =
+                "none";
+
+        }
+    );
+
+         }
    
 </body>
 
