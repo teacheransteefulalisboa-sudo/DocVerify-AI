@@ -421,7 +421,18 @@ function startApp() {
     const welcomeScreen =
         document.getElementById("welcomeScreen");
 
-    welcomeScreen.style.display = "none";
+    if (welcomeScreen) {
+        welcomeScreen.style.display = "none";
+    }
+
+    const appContent =
+        document.getElementById("appContent");
+
+    if (appContent) {
+        appContent.style.display = "block";
+    }
+
+         }
 
 }
 
