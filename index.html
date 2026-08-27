@@ -1,280 +1,191 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocVerify AI</title>
 
-<title>DocVerify AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-<style>
+        body {
+            min-height: 100vh;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-* {
-    box-sizing: border-box;
-}
+        .app {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+        }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    color: #14213d;
-}
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 50px;
+        }
 
-/* TELA INICIAL */
+        .logo span {
+            color: #38bdf8;
+        }
 
-#welcomeScreen {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: #0b1f3a;
-    color: white;
-    padding: 25px;
-}
+        .subtitle {
+            margin-top: 12px;
+            color: #cbd5e1;
+            font-size: 15px;
+        }
 
-.welcomeContent {
-    max-width: 650px;
-}
+        .welcome {
+            margin-top: 80px;
+        }
 
-.shield {
-    font-size: 80px;
-}
+        .welcome h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
 
-.welcomeTitle {
-    font-size: 42px;
-    margin: 15px 0 5px;
-}
+        .welcome p {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
 
-.welcomeText {
-    font-size: 18px;
-    opacity: .85;
-    line-height: 1.6;
-}
+        button {
+            border: none;
+            cursor: pointer;
+        }
 
-.startButton {
-    margin-top: 25px;
-    padding: 16px 40px;
-    border: none;
-    border-radius: 10px;
-    background: white;
-    color: #0b1f3a;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        #startButton {
+            margin-top: 35px;
+            padding: 16px 35px;
+            border-radius: 10px;
+            background: #38bdf8;
+            color: #082f49;
+            font-size: 17px;
+            font-weight: bold;
+        }
 
-/* APLICAÇÃO */
+        #startButton:hover {
+            background: #7dd3fc;
+        }
 
-#app {
-    display: none;
-}
+        #verificationScreen {
+            display: none;
+        }
 
-header {
-    background: #0b1f3a;
-    color: white;
-    padding: 22px;
-    text-align: center;
-}
+        .upload-box {
+            margin-top: 35px;
+            border: 2px dashed #475569;
+            border-radius: 15px;
+            padding: 35px 20px;
+            background: #1e293b;
+        }
 
-.logo {
-    font-size: 28px;
-    font-weight: bold;
-}
+        .upload-box p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
 
-.subtitle {
-    margin-top: 5px;
-    font-size: 14px;
-    opacity: .8;
-}
+        #fileInput {
+            display: none;
+        }
 
-.container {
-    max-width: 950px;
-    margin: 35px auto;
-    padding: 20px;
-}
+        .select-button {
+            display: inline-block;
+            padding: 14px 25px;
+            background: #38bdf8;
+            color: #082f49;
+            border-radius: 9px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.08);
-}
+        #previewBox {
+            display: none;
+            margin-top: 25px;
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 15px;
+        }
 
-h1 {
-    text-align: center;
-}
+        #preview {
+            width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
 
-.description {
-    text-align: center;
-    color: #64748b;
-}
+        #fileName {
+            margin-top: 12px;
+            color: #cbd5e1;
+            word-break: break-word;
+        }
 
-.upload-area {
-    margin-top: 30px;
-    border: 2px dashed #8ca0bb;
-    border-radius: 15px;
-    padding: 45px 20px;
-    text-align: center;
-}
+        .footer {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 40px;
+        }
 
-.icon {
-    font-size: 55px;
-}
-
-.selectButton {
-    background: #1769aa;
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-#fileName {
-    margin-top: 15px;
-    color: #52647d;
-    word-break: break-word;
-}
-
-/* PREVISUALIZAÇÃO */
-
-#previewBox {
-    display: none;
-    margin-top: 30px;
-    text-align: center;
-}
-
-#preview {
-    display: block;
-    max-width: 100%;
-    max-height: 500px;
-    margin: 15px auto;
-    border-radius: 12px;
-    border: 1px solid #d7dee8;
-}
-
-.pdfBox {
-    display: none;
-    padding: 25px;
-    background: #f6f8fb;
-    border-radius: 12px;
-}
-
-.actionButton {
-    border: none;
-    padding: 13px 22px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 5px;
-}
-
-.removeButton {
-    background: #b42318;
-    color: white;
-}
-
-.analyzeButton {
-    background: #16803c;
-    color: white;
-}
-
-/* RESULTADO */
-
-#result {
-    display: none;
-    margin-top: 30px;
-}
-
-.resultCard {
-    background: #f6f8fb;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 15px;
-}
-
-.status {
-    padding: 12px;
-    border-radius: 8px;
-    background: #fff3cd;
-    color: #805f00;
-    font-weight: bold;
-}
-
-textarea {
-    width: 100%;
-    min-height: 180px;
-    padding: 15px;
-    border: 1px solid #ccd5e0;
-    border-radius: 10px;
-    resize: vertical;
-}
-
-.warning {
-    background: #fff3cd;
-    color: #805f00;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 15px;
-}
-
-footer {
-    text-align: center;
-    padding: 30px;
-    color: #718096;
-    font-size: 13px;
-}
-
-@media(max-width:600px) {
-
-    .container {
-        margin: 15px auto;
-        padding: 12px;
-    }
-
-    .card {
-        padding: 20px;
-    }
-
-    .welcomeTitle {
-        font-size: 30px;
-    }
-
-}
-
-</style>
-
+        .footer strong {
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 
+    <div class="app">
 
-<!-- =========================
-     TELA INICIAL
-========================= -->
+        <div>
 
-<section id="welcomeScreen">
+            <div class="logo">
+                Doc<span>Verify</span> AI
+            </div>
 
-    <div class="welcomeContent">
+            <div class="subtitle">
+                Intelligent Document Verification
+            </div>
 
-        <div class="shield">
-            🛡️
-        </div>
 
-        <div class="welcomeTitle">
-            DOCVERIFY AI
-        </div>
+            <!-- TELA INICIAL -->
 
-        <p class="welcomeText">
-            Intelligent Document Verification System
-        </p>
+            <div class="welcome" id="welcomeScreen">
 
-        <p class="welco
+                <h1>Verify Your Document</h1>
+
+                <p>
+                    Detect possible fake or altered documents
+                    using DocVerify AI.
+                </p>
+
+                <button id="startButton">
+                    Start Verification
+                </button>
+
+            </div>
+
+
+            <!-- TELA DE VERIFICAÇÃO -->
+
+            <div id="verificationScreen">
+
+                <h1 style="margin-top: 50px;">
+                    Select a Document
+                </h1>
+
+                <div class="upload
