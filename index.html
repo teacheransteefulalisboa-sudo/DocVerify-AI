@@ -576,7 +576,10 @@ documentInput.addEventListener("change", function() {
     const file = this.files[0];
     
 alert("Ficheiro selecionado: " + file.name);
-    fileName.textContent = file.name;
+
+fileName.textContent = "FICHEIRO: " + file.name;
+
+alert("O nome foi colocado na página!");
 
     result.style.display = "block";
 
