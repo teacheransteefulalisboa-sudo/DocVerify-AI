@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>DocVerify AI</title>
 
     <style>
@@ -47,7 +46,6 @@
         .subtitle {
             margin-top: 12px;
             color: #cbd5e1;
-            font-size: 15px;
         }
 
         .welcome {
@@ -64,31 +62,25 @@
             line-height: 1.6;
         }
 
-        button {
-            border: none;
-            cursor: pointer;
-        }
-
         #startButton {
             margin-top: 35px;
             padding: 16px 35px;
+            border: none;
             border-radius: 10px;
             background: #38bdf8;
             color: #082f49;
             font-size: 17px;
             font-weight: bold;
-        }
-
-        #startButton:hover {
-            background: #7dd3fc;
+            cursor: pointer;
         }
 
         #verificationScreen {
             display: none;
+            margin-top: 40px;
         }
 
         .upload-box {
-            margin-top: 35px;
+            margin-top: 30px;
             border: 2px dashed #475569;
             border-radius: 15px;
             padding: 35px 20px;
@@ -137,8 +129,9 @@
 
         .footer {
             color: #94a3b8;
-            font-size: 13px;
+            font-size: 14px;
             margin-top: 40px;
+            padding-bottom: 20px;
         }
 
         .footer strong {
@@ -149,43 +142,47 @@
 
 <body>
 
-    <div class="app">
+<div class="app">
 
-        <div>
+    <div>
 
-            <div class="logo">
-                Doc<span>Verify</span> AI
-            </div>
+        <div class="logo">
+            Doc<span>Verify</span> AI
+        </div>
 
-            <div class="subtitle">
-                Intelligent Document Verification
-            </div>
+        <div class="subtitle">
+            Intelligent Document Verification
+        </div>
 
+        <div class="welcome" id="welcomeScreen">
 
-            <!-- TELA INICIAL -->
+            <h1>Verify Your Document</h1>
 
-            <div class="welcome" id="welcomeScreen">
+            <p>
+                Detect possible fake or altered documents
+                using DocVerify AI.
+            </p>
 
-                <h1>Verify Your Document</h1>
+            <button id="startButton">
+                Start Verification
+            </button>
+
+        </div>
+
+        <div id="verificationScreen">
+
+            <h1>Select a Document</h1>
+
+            <div class="upload-box">
 
                 <p>
-                    Detect possible fake or altered documents
-                    using DocVerify AI.
+                    Select a photo or document
+                    to begin verification.
                 </p>
 
-                <button id="startButton">
-                    Start Verification
-                </button>
+                <label for="fileInput" class="select-button">
+                    Select Document
+                </label>
 
-            </div>
-
-
-            <!-- TELA DE VERIFICAÇÃO -->
-
-            <div id="verificationScreen">
-
-                <h1 style="margin-top: 50px;">
-                    Select a Document
-                </h1>
-
-                <div class="upload
+                <input
+       
