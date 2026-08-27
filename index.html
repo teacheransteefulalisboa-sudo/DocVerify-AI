@@ -6,37 +6,22 @@
     <title>DocVerify AI</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
         body {
+            margin: 0;
             min-height: 100vh;
             background: #0f172a;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
 
         .app {
-            width: 100%;
-            max-width: 500px;
-            min-height: 100vh;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: center;
+            padding: 40px 20px;
         }
 
         .logo {
             font-size: 32px;
             font-weight: bold;
-            margin-top: 50px;
         }
 
         .logo span {
@@ -44,7 +29,7 @@
         }
 
         .subtitle {
-            margin-top: 12px;
+            margin-top: 10px;
             color: #cbd5e1;
         }
 
@@ -52,19 +37,9 @@
             margin-top: 80px;
         }
 
-        .welcome h1 {
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-
-        .welcome p {
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-
         #startButton {
-            margin-top: 35px;
-            padding: 16px 35px;
+            margin-top: 30px;
+            padding: 15px 30px;
             border: none;
             border-radius: 10px;
             background: #38bdf8;
@@ -76,20 +51,15 @@
 
         #verificationScreen {
             display: none;
-            margin-top: 40px;
+            margin-top: 50px;
         }
 
         .upload-box {
-            margin-top: 30px;
+            margin-top: 25px;
+            padding: 30px;
             border: 2px dashed #475569;
             border-radius: 15px;
-            padding: 35px 20px;
             background: #1e293b;
-        }
-
-        .upload-box p {
-            color: #cbd5e1;
-            margin-bottom: 20px;
         }
 
         #fileInput {
@@ -98,6 +68,7 @@
 
         .select-button {
             display: inline-block;
+            margin-top: 15px;
             padding: 14px 25px;
             background: #38bdf8;
             color: #082f49;
@@ -105,84 +76,3 @@
             font-weight: bold;
             cursor: pointer;
         }
-
-        #previewBox {
-            display: none;
-            margin-top: 25px;
-            background: #1e293b;
-            padding: 15px;
-            border-radius: 15px;
-        }
-
-        #preview {
-            width: 100%;
-            max-height: 350px;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-
-        #fileName {
-            margin-top: 12px;
-            color: #cbd5e1;
-            word-break: break-word;
-        }
-
-        .footer {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-top: 40px;
-            padding-bottom: 20px;
-        }
-
-        .footer strong {
-            color: white;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="app">
-
-    <div>
-
-        <div class="logo">
-            Doc<span>Verify</span> AI
-        </div>
-
-        <div class="subtitle">
-            Intelligent Document Verification
-        </div>
-
-        <div class="welcome" id="welcomeScreen">
-
-            <h1>Verify Your Document</h1>
-
-            <p>
-                Detect possible fake or altered documents
-                using DocVerify AI.
-            </p>
-
-            <button id="startButton">
-                Start Verification
-            </button>
-
-        </div>
-
-        <div id="verificationScreen">
-
-            <h1>Select a Document</h1>
-
-            <div class="upload-box">
-
-                <p>
-                    Select a photo or document
-                    to begin verification.
-                </p>
-
-                <label for="fileInput" class="select-button">
-                    Select Document
-                </label>
-
-                <input
-       
